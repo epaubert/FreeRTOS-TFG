@@ -1,0 +1,31 @@
+FreeRTOS-Kernel/CMakeFiles/freertos_kernel.dir/list.c.obj: \
+ /home/epaubert/Documentos/Universidad/AnioActual/TFG/FreeRTOS-TFG/FreeRTOS/Source/list.c \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/stdlib.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/machine/ieeefp.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/_ansi.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/newlib.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/_newlib_version.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/sys/config.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/sys/features.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/lib/gcc/arm-none-eabi/12.3.1/include/stddef.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/sys/reent.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/_ansi.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/sys/_types.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/machine/_types.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/machine/_default_types.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/sys/lock.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/sys/cdefs.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/machine/stdlib.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/alloca.h \
+ /home/epaubert/Documentos/Universidad/AnioActual/TFG/FreeRTOS-TFG/FreeRTOS/Source/include/./FreeRTOS.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/lib/gcc/arm-none-eabi/12.3.1/include/stdint.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/stdint.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/sys/_intsup.h \
+ /nix/store/r5mxnm07v6p4vsxng4rj20ja16mflcqf-gcc-arm-embedded-12.3.rel1/arm-none-eabi/include/sys/_stdint.h \
+ /home/epaubert/Documentos/Universidad/AnioActual/TFG/FreeRTOS-TFG/FreeRTOS/Source/portable/GCC/MC13224V/FreeRTOSConfig.h \
+ /home/epaubert/Documentos/Universidad/AnioActual/TFG/FreeRTOS-TFG/FreeRTOS/Source/include/./projdefs.h \
+ /home/epaubert/Documentos/Universidad/AnioActual/TFG/FreeRTOS-TFG/FreeRTOS/Source/include/./portable.h \
+ /home/epaubert/Documentos/Universidad/AnioActual/TFG/FreeRTOS-TFG/FreeRTOS/Source/include/./deprecated_definitions.h \
+ /home/epaubert/Documentos/Universidad/AnioActual/TFG/FreeRTOS-TFG/FreeRTOS/Source/portable/GCC/MC13224V/portmacro.h \
+ /home/epaubert/Documentos/Universidad/AnioActual/TFG/FreeRTOS-TFG/FreeRTOS/Source/include/./mpu_wrappers.h \
+ /home/epaubert/Documentos/Universidad/AnioActual/TFG/FreeRTOS-TFG/FreeRTOS/Source/include/./list.h

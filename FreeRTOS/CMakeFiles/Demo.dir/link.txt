@@ -1,0 +1,1 @@
+/run/current-system/sw/bin/arm-none-eabi-gcc -specs=nosys.specs -nostartfiles -T/home/epaubert/Documentos/Universidad/AnioActual/TFG/FreeRTOS-TFG/FreeRTOS/econotag.ld CMakeFiles/Demo.dir/Demo/MC13224V_GCC/main.c.obj CMakeFiles/Demo.dir/Demo/MC13224V_GCC/ParTest/ParTest.c.obj -o bin/Demo  lib/libfreertos_kernel.a lib/libbsp.a

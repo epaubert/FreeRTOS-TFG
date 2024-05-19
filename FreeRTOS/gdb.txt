@@ -1,0 +1,8 @@
+set architecture arm
+target extended-remote localhost:3333
+monitor soft_reset_halt
+file bin/Demo
+load bin/Demo
+break _start
+break 0x4000e4
+continue
