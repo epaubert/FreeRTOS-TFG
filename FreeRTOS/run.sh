@@ -42,7 +42,7 @@ check_bin
 check_openocd
 run &
 
-sleep 2 && gdb -x gdb.txt
+sleep 1 && gdb -x gdb.txt
 
 # $MC1322X_LOAD -f $BIN -t $SERIAL_PORT
 # $TERMINAL -e "telnet localhost 3333" &

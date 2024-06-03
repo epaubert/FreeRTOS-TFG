@@ -1,2 +1,12 @@
+-[/] modificar FreeRTOSConfig.h
+-[ ] modificar port.c
+    -[/] StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack,
+    -[ ] ? void vTaskDelay(const TickType_t xTicksToDelay) PRIVILEGED_FUNCTION;
+    -[ ] ? void vTaskStartScheduler(void) PRIVILEGED_FUNCTION;
+    -[ ] BaseType_t xPortStartScheduler(void) { return pdTRUE; }
+    -[ ] ? void vPortEndScheduler(void) {}
+    -[ ] void vPortYield(void) {
+    -[ ] ? static void prvTickISR(void) {
+-[/] modificar portmacro.c
 
-Crashea en 0x4000e8 en vez de saltar a main
+-[X] Crasheo al saltar a main

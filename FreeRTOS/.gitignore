@@ -1,0 +1,9 @@
+.cache/*
+CMakeCache.txt
+CMakeFiles/*
+FreeRTOS-Kernel/CMakeFiles/*
+FreeRTOS-Kernel/Makefile
+FreeRTOS-Kernel/include/Makefile
+FreeRTOS-Kernel/portable/Makefile
+Makefile
+compile_commands.json

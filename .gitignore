@@ -11,6 +11,7 @@
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+[Ll]ib/
 
 # CodeWarrior temporary files
 *.tdt
@@ -23,6 +24,9 @@ CWSettingsWindows.stg
 *.elf
 *.out
 *.rom
+
+# Object files
+*.obj*
 
 # MS Word Files
 *.doc
@@ -57,3 +61,7 @@ __pycache__/
 
 # Renesas IDE temporary files
 *.nav
+
+# CMakeFiles
+*CMakeFiles*
+
