@@ -27,8 +27,8 @@ set(CMAKE_AR "${CROSS_COMPILE}ar")
 set(CMAKE_EXE_LINKER_FLAGS "-specs=nosys.specs" CACHE INTERNAL "")
 
 # Flags
-set(CFLAGS "-c -g -O2 -Wall -mcpu=arm7tdmi -mthumb") # -g -mthumb-interwork
-set(ASFLAGS "-gstabs -mcpu=arm7tdmi -mfpu=softfpa -mthumb") #
+set(CFLAGS "-c -g -O2 -Wall -mcpu=arm7tdmi") # -mthumb -mthumb-interwork
+set(ASFLAGS "-gstabs -mcpu=arm7tdmi -mfpu=softfpa") # -mthumb
 set(ARFLAGS "-src")
 set(LDFLAGS 
     -nostartfiles
@@ -94,7 +94,7 @@ target_compile_options(freertos_kernel PRIVATE
     $<$<COMPILE_LANG_AND_ID:C,GNU>:-g>
     $<$<COMPILE_LANG_AND_ID:C,GNU>:-mcpu=arm7tdmi >
     $<$<COMPILE_LANG_AND_ID:C,GNU>:-O2>
-    $<$<COMPILE_LANG_AND_ID:C,GNU>:-mthumb>
+    # $<$<COMPILE_LANG_AND_ID:C,GNU>:-mthumb>
     # $<$<COMPILE_LANG_AND_ID:C,GNU>:-mthumb-interwork >
     
 
