@@ -7,3 +7,4 @@ FreeRTOS-Kernel/include/Makefile
 FreeRTOS-Kernel/portable/Makefile
 Makefile
 compile_commands.json
+cmake_install.cmake

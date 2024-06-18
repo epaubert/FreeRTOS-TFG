@@ -78,7 +78,7 @@ void main(void) {
   static StaticTask_t exampleTaskTCB;
   static StackType_t exampleTaskStack[configMINIMAL_STACK_SIZE];
 
-  // (void)printf("Example FreeRTOS Project\n");
+  (void)printf("Example FreeRTOS Project\n");
 
   (void)xTaskCreateStatic(exampleTask, "example", configMINIMAL_STACK_SIZE,
                           NULL, configMAX_PRIORITIES - 1U,

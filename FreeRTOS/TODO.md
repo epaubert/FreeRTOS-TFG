@@ -1,12 +1,17 @@
--[/] modificar FreeRTOSConfig.h
--[ ] modificar port.c
-    -[/] StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack,
-    -[ ] ? void vTaskDelay(const TickType_t xTicksToDelay) PRIVILEGED_FUNCTION;
-    -[ ] ? void vTaskStartScheduler(void) PRIVILEGED_FUNCTION;
-    -[ ] BaseType_t xPortStartScheduler(void) { return pdTRUE; }
-    -[ ] ? void vPortEndScheduler(void) {}
-    -[ ] void vPortYield(void) {
-    -[ ] ? static void prvTickISR(void) {
--[/] modificar portmacro.c
+-[ ] BSP
+  -[ ] Extender el bsp con la pila preparada para FreeRTOS
+  -[ ] Extender el bsp con un driver de interrupciones como pide FreeRtos
 
--[X] Crasheo al saltar a main
+-[ ] FreeRTOS
+  -[/] modificar FreeRTOSConfig.h
+  -[ ] modificar port.c
+      -[/] StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack,
+      -[ ] ? void vTaskDelay(const TickType_t xTicksToDelay) PRIVILEGED_FUNCTION;
+      -[ ] ? void vTaskStartScheduler(void) PRIVILEGED_FUNCTION;
+      -[ ] BaseType_t xPortStartScheduler(void) { return pdTRUE; }
+      -[ ] ? void vPortEndScheduler(void) {}
+      -[ ] void vPortYield(void) {
+      -[ ] ? static void prvTickISR(void) {
+  -[/] modificar portmacro.c
+  -[ ] Copiando parte del port GCC/ARM7_LPC2000 para el guardado y restauración del contexto
+  -[X] Crasheo al saltar a main
