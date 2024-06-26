@@ -4,5 +4,5 @@ monitor soft_reset_halt
 file bin/Demo
 load bin/Demo
 break _start
-break 0x4000e4
+break main
 continue

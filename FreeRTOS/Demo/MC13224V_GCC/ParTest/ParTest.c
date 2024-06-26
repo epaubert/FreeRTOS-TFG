@@ -35,58 +35,6 @@
 #include "partest.h"
 #include "gpio.h"
 
-/**
- * Acceso estructurado a los registros de control del gpio del MC1322x
- */
-typedef struct {
-  /* Selección de dirección del pad */
-  uint32_t PAD_DIR[2];
-
-  /* Datos */
-  uint32_t DATA[2];
-
-  /* Habilitación de pull-up/pull_down */
-  uint32_t PU_EN[2];
-
-  /*  Selección del modo de funcionamiento de cada pin */
-  uint32_t FUNC_SEL[4];
-
-  /* Selección del origen de los datos de entrada */
-  uint32_t DATA_SEL[2];
-
-  /* Selección entre pull-up y pull-down */
-  uint32_t PAD_PU_SEL[2];
-
-  /* Habilitación de histéresis */
-  uint32_t PAD_HYST_EN[2];
-
-  /* Habilitación de mantener el último estado del pin */
-  uint32_t PAD_KEEP[2];
-
-  /* Activa bits en GPIO_DATA */
-  uint32_t DATA_SET[2];
-
-  /* Desactiva bits en GPIO_DATA */
-  uint32_t DATA_RESET[2];
-
-  /* Activa bits en GPIO_PAD_DIR */
-  uint32_t DIR_SET[2];
-
-  /* Desactiva bits en GPIO_PAD_DIR */
-  uint32_t DIR_RESET[2];
-} gpio_regs_t;
-
-static volatile gpio_regs_t *const gpio_regs = GPIO_BASE;
-
-#define port gpio_port_0
-#define GPIO_IOSET gpio_regs->DATA_SET[port]   // = mask
-#define GPIO_IOCLR gpio_regs->DATA_RESET[port] // = mask
-#define GPIO0_IOPIN gpio_regs->DATA[port]
-
-#define partstFIRST_IO ((unsigned long)0x400)
-#define partstNUM_LEDS (2)
-#define partstALL_OUTPUTS_OFF ((unsigned long)0xffffffff)
-
 /*-----------------------------------------------------------
  * Simple parallel port IO routines.
  *-----------------------------------------------------------*/

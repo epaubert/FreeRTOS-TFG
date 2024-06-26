@@ -45,17 +45,27 @@
 /* Standard includes. */
 #include <stdio.h>
 
-// /* Dirección del registro de control de dirección del GPIO32-GPIO63 */
-// volatile uint32_t *const reg_gpio_pad_dir1 = (uint32_t *)0x80000004;
-//
-// /* Dirección del registro de activación de bits del GPIO32-GPIO63 */
-// volatile uint32_t *const reg_gpio_data_set1 = (uint32_t *)0x8000004c;
-//
-// /* Dirección del registro de limpieza de bits del GPIO32-GPIO63 */
-// volatile uint32_t *const reg_gpio_data_reset1 = (uint32_t *)0x80000054;
-//
-/* El led rojo está en el GPIO 44 (el bit 12 de los registros GPIO_X_1) */
-uint32_t const led_red_mask = (1 << (44 - 32));
+#define LED_RED gpio_pin_44
+#define LED_GREEN gpio_pin_45
+
+void toggle_led(gpio_pin_t LED) {
+  static uint32_t red_led_state	  = 0;
+  static uint32_t green_led_state = 0;
+
+  uint32_t *led_state = LED == LED_RED ? &red_led_state : &green_led_state;
+
+  if (*led_state)
+    gpio_clear_pin(LED);
+  else
+    gpio_set_pin(LED);
+
+  *led_state = !*(led_state);
+}
+
+void led_init() {
+  gpio_set_pin_dir_output(LED_RED);
+  gpio_set_pin_dir_output(LED_GREEN);
+}
 
 /*-----------------------------------------------------------*/
 
@@ -64,42 +74,51 @@ static void exampleTask(void *parameters);
 /*-----------------------------------------------------------*/
 
 static void exampleTask(void *parameters) {
-  /* Unused parameters. */
-  (void)parameters;
+    /* Unused parameters. */
+    (void)parameters;
 
-  for (;;) {
-    vParTestToggleLED(led_red_mask);
-    vTaskDelay(500); /* delay 100 ticks */
-  }
+    for (;;) {
+        toggle_led(LED_RED);
+        vTaskDelay(100); /* delay 100 ticks */
+    }
 }
 /*-----------------------------------------------------------*/
 
 void main(void) {
-  static StaticTask_t exampleTaskTCB;
-  static StackType_t exampleTaskStack[configMINIMAL_STACK_SIZE];
+    static StaticTask_t exampleTaskTCB;
+    static StackType_t exampleTaskStack[configMINIMAL_STACK_SIZE];
 
-  (void)printf("Example FreeRTOS Project\n");
+    (void)printf("Example FreeRTOS Project\n");
 
-  (void)xTaskCreateStatic(exampleTask, "example", configMINIMAL_STACK_SIZE,
-                          NULL, configMAX_PRIORITIES - 1U,
-                          &(exampleTaskStack[0]), &(exampleTaskTCB));
+    led_init();
+    toggle_led(LED_GREEN);
+    toggle_led(LED_RED);
 
-  /* Start the scheduler. */
-  vTaskStartScheduler();
+    (void)xTaskCreate( exampleTask,
+                      "example",
+                      configMINIMAL_STACK_SIZE,
+                      NULL,
+                      configMAX_PRIORITIES - 1U,
+                      NULL);
 
-  for (;;) {
-    /* Should not reach here. */
-  }
+    /* Start the scheduler. */
+    vTaskStartScheduler();
+
+    toggle_led(LED_GREEN);
+
+    for (;;) {
+        /* Should not reach here. */
+    }
 }
 /*-----------------------------------------------------------*/
 
 #if (configCHECK_FOR_STACK_OVERFLOW > 0)
 
 void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
-  /* Check pcTaskName for the name of the offending task,
+    /* Check pcTaskName for the name of the offending task,
    * or pxCurrentTCB if pcTaskName has itself been corrupted. */
-  (void)xTask;
-  (void)pcTaskName;
+    (void)xTask;
+    (void)pcTaskName;
 }
 
 #endif /* #if ( configCHECK_FOR_STACK_OVERFLOW > 0 ) */

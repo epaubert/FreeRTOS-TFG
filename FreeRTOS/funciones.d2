@@ -1,0 +1,5 @@
+DEMO.main -> FREERTOS.vTaskStartScheduler
+FREERTOS.vTaskStartScheduler -> PORT.xPortStartScheduler
+PORT.xPortStartScheduler -> PORT.prvSetupTimerInterrupt
+PORT.xPortStartScheduler -> PORT.vPortISRStartFirstTask
+PORT.vPortISRStartFirstTask -> PORT.portRESTORE_CONTEXT

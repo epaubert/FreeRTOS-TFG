@@ -114,7 +114,7 @@ target_compile_options(freertos_kernel PRIVATE
 
 add_executable(Demo
     ${DEMO_DIR}main.c
-    ${DEMO_DIR}ParTest/ParTest.c
+    # ${DEMO_DIR}ParTest/ParTest.c
 )
 
 target_include_directories( Demo PRIVATE
