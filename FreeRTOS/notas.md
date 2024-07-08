@@ -7,3 +7,11 @@
     - [X] no econtraba el bsp
 
 * Tamaño -> thumb y -Os
+
+
+- [X] Una vez configurado el port al ejecutar y debuggear con gdb llegué a que FreeRTOS no tenía suficiente RAM para crear la task así que la aumenté de 4096 a 16384. SOLUCIONADO
+- [X] Ahora tengo un problema que puede estar relacionado con el stack disponible para la task. SOLUCIONADO
+- [X] Parece que tengo que implementar un handler para el SWI (Software interrupt). SOLUCIONADO
+- [ ] Es posible que no se estén reactivando las interrupciones, lo que hace que se quede en la idle task permanentemente
+    <!-- * cpsr = 0x20000092 -->
+

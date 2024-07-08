@@ -27,7 +27,7 @@ set(CMAKE_AR "${CROSS_COMPILE}ar")
 set(CMAKE_EXE_LINKER_FLAGS "-specs=nosys.specs" CACHE INTERNAL "")
 
 # Flags
-set(CFLAGS "-c -g -O2 -Wall -mcpu=arm7tdmi") # -mthumb -mthumb-interwork
+set(CFLAGS "-c -g -Og -Wall -mcpu=arm7tdmi") # -mthumb -mthumb-interwork
 set(ASFLAGS "-gstabs -mcpu=arm7tdmi -mfpu=softfpa") # -mthumb
 set(ARFLAGS "-src")
 set(LDFLAGS 
@@ -92,11 +92,10 @@ target_compile_options(freertos_kernel PRIVATE
     $<$<COMPILE_LANG_AND_ID:C,Clang>:-fcolor-diagnostics>
 
     $<$<COMPILE_LANG_AND_ID:C,GNU>:-g>
+    $<$<COMPILE_LANG_AND_ID:C,GNU>:-Og>
     $<$<COMPILE_LANG_AND_ID:C,GNU>:-mcpu=arm7tdmi >
-    $<$<COMPILE_LANG_AND_ID:C,GNU>:-O2>
     # $<$<COMPILE_LANG_AND_ID:C,GNU>:-mthumb>
     # $<$<COMPILE_LANG_AND_ID:C,GNU>:-mthumb-interwork >
-    
 
     $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wall>
     $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wextra>
@@ -112,20 +111,20 @@ target_compile_options(freertos_kernel PRIVATE
     $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-covered-switch-default>
     $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-cast-align> )
 
-add_executable(Demo
+add_executable(Demo.elf
     ${DEMO_DIR}main.c
     # ${DEMO_DIR}ParTest/ParTest.c
 )
 
-target_include_directories( Demo PRIVATE
+target_include_directories( Demo.elf PRIVATE
     Demo/Common/include/
     ${BSP_DIR}/include/
 )
 
 # add_link_options("-fuse-ld=${CMAKE_C_LINKER} ${LDFLAGS}")
 # set_target_properties(${PROJECT_NAME} PROPERTIES LINK_DEPENDS ${CMAKE_SOURCE_DIR}/${LINKER_SCRIPT})
-target_link_options(Demo PRIVATE 
+target_link_options(Demo.elf PRIVATE 
     "${LDFLAGS}"
 )
 
-target_link_libraries(Demo freertos_kernel freertos_config)
+target_link_libraries(Demo.elf freertos_kernel freertos_config)

@@ -45,69 +45,99 @@
 /* Standard includes. */
 #include <stdio.h>
 
+/*-----------------------------------------------------------*/
+
 #define LED_RED gpio_pin_44
 #define LED_GREEN gpio_pin_45
 
-void toggle_led(gpio_pin_t LED) {
-  static uint32_t red_led_state	  = 0;
-  static uint32_t green_led_state = 0;
-
-  uint32_t *led_state = LED == LED_RED ? &red_led_state : &green_led_state;
-
-  if (*led_state)
-    gpio_clear_pin(LED);
-  else
-    gpio_set_pin(LED);
-
-  *led_state = !*(led_state);
-}
+/*-----------------------------------------------------------*/
 
 void led_init() {
-  gpio_set_pin_dir_output(LED_RED);
-  gpio_set_pin_dir_output(LED_GREEN);
+    gpio_set_pin_dir_output(LED_RED);
+    gpio_clear_pin(LED_RED);
+
+    gpio_set_pin_dir_output(LED_GREEN);
+    gpio_clear_pin(LED_GREEN);
 }
 
+void toggle_led(gpio_pin_t LED) {
+    static uint32_t red_led_state   = 0;
+    static uint32_t green_led_state = 0;
+
+    uint32_t *led_state = LED == LED_RED ? &red_led_state : &green_led_state;
+
+    if (*led_state)
+        gpio_clear_pin(LED);
+    else
+        gpio_set_pin(LED);
+
+    *led_state = !*(led_state);
+}
+
+
 /*-----------------------------------------------------------*/
 
-static void exampleTask(void *parameters);
-
-/*-----------------------------------------------------------*/
-
-static void exampleTask(void *parameters) {
+// Task 1:
+static void blinkRed(void *parameters) {
     /* Unused parameters. */
     (void)parameters;
 
+    /* Block for 1 sec. */
+    // const TickType_t xDelay = 100 / portTICK_PERIOD_MS;
     for (;;) {
         toggle_led(LED_RED);
-        vTaskDelay(100); /* delay 100 ticks */
+        vTaskDelay(20); /* delay 100 ticks */
+    }
+}
+
+// Task 2:
+static void blinkGreen(void *parameters) {
+    /* Unused parameters. */
+    (void)parameters;
+
+    /* Block for 1 sec. */
+    // const TickType_t xDelay = 100 / portTICK_PERIOD_MS;
+    for (;;) {
+        toggle_led(LED_RED);
+        vTaskDelay(50); /* delay 100 ticks */
     }
 }
 /*-----------------------------------------------------------*/
 
 void main(void) {
-    static StaticTask_t exampleTaskTCB;
-    static StackType_t exampleTaskStack[configMINIMAL_STACK_SIZE];
-
     (void)printf("Example FreeRTOS Project\n");
 
     led_init();
-    toggle_led(LED_GREEN);
-    toggle_led(LED_RED);
 
-    (void)xTaskCreate( exampleTask,
-                      "example",
-                      configMINIMAL_STACK_SIZE,
-                      NULL,
-                      configMAX_PRIORITIES - 1U,
-                      NULL);
+    gpio_set_pin(LED_GREEN);
+
+    BaseType_t aux = xTaskCreate( blinkRed,
+                                 "BlinkRed",
+                                 configMINIMAL_STACK_SIZE*4,
+                                 NULL,
+                                 configMAX_PRIORITIES - 1U,
+                                 NULL);
+
+    if (aux != pdPASS)
+    {
+        gpio_clear_pin(LED_GREEN);
+        for(;;){}
+    }
+
+    // (void)xTaskCreate( blinkGreen,
+    //                   "BlinkGreen",
+    //                   configMINIMAL_STACK_SIZE*2,
+    //                   NULL,
+    //                   configMAX_PRIORITIES - 1U,
+    //                   NULL);
+
 
     /* Start the scheduler. */
     vTaskStartScheduler();
 
-    toggle_led(LED_GREEN);
-
+    /* Should not reach here. */
+    gpio_clear_pin(LED_GREEN);
     for (;;) {
-        /* Should not reach here. */
     }
 }
 /*-----------------------------------------------------------*/

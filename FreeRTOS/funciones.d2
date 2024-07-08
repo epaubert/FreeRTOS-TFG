@@ -1,5 +1,39 @@
+DEMO {
+    main
+    blinkRed
+    blinkGreen
+}
+IRQ{
+    SWI -> _.PORT.vPortYieldProcessor
+    TMR -> _.PORT.vTickISR
+}
+
+FREERTOS{
+vTaskStartScheduler
+}
+
+PORT {
+xPortStartScheduler
+prvSetupTimerInterrupt
+vPortISRStartFirstTask
+portSAVE_CONTEXT
+portRESTORE_CONTEXT
+vTickISR
+vPortYieldProcessor
+}
+
 DEMO.main -> FREERTOS.vTaskStartScheduler
 FREERTOS.vTaskStartScheduler -> PORT.xPortStartScheduler
 PORT.xPortStartScheduler -> PORT.prvSetupTimerInterrupt
 PORT.xPortStartScheduler -> PORT.vPortISRStartFirstTask
 PORT.vPortISRStartFirstTask -> PORT.portRESTORE_CONTEXT
+
+PORT.vTickISR -> PORT.portSAVE_CONTEXT
+PORT.vTickISR -> PORT.portRESTORE_CONTEXT
+PORT.vTickISR -> FREERTOS.xTaskIncrementTick
+PORT.vTickISR -> FREERTOS.vTaskSwitchContext
+
+DEMO.blinkRed -> FREERTOS.vTaskDelay
+DEMO.blinkGreen -> FREERTOS.vTaskDelay
+FREERTOS.vTaskDelay -> IRQ.SWI
+
