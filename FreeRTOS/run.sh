@@ -16,10 +16,18 @@ BIN=bin/$(basename $ELF .elf).bin
 
 check_bin(){
     echo "Buscando $ELF..."
+        make clean
     if ! test -f $ELF ; then
+        echo "Generando $ELF..."
         cmake --fresh
         make
     fi
+
+    if ! test -f $ELF ; then
+        echo "Fallo al compilar $ELF"
+        exit 1
+    fi
+
     echo "Generando $BIN..."
     arm-none-eabi-objcopy -O binary $ELF $BIN
 }
@@ -42,7 +50,8 @@ check_bin
 check_openocd
 run &
 
-sleep 1 && arm-none-eabi-gdb -x debug.gdb
+sleep 2 && echo "Lanzando Debugger..."
+gdb -x break.gdb | tee gdb.log
 
 # $MC1322X_LOAD -f $BIN -t $SERIAL_PORT
 # $TERMINAL -e "telnet localhost 3333" &

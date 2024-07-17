@@ -5,7 +5,7 @@ set(BIN "/run/current-system/sw/bin/")
 set(SHELL "${BIN}sh")
 
 set(PORT_DIR "Source/portable/GCC/ARM7_MC13224V/")
-set(DEMO_DIR "Demo/MC13224V_GCC/")
+set(DEMO_DIR "Demo/ARM7_MC13224V_GCC/")
 set(TOOL_DIR "tools-econotag/")
 set(BSP_DIR "${PORT_DIR}bsp/")
 set(LINKER_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/econotag.ld")

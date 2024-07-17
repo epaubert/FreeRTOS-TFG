@@ -15,3 +15,4 @@
 - [ ] Es posible que no se estén reactivando las interrupciones, lo que hace que se quede en la idle task permanentemente
     <!-- * cpsr = 0x20000092 -->
 
+Puede que se esté interrumpiendo blinkRed con un tick y no tenga tiempo para hacer suficiente entre ticks o no se esté restaurando el contexto correctamente

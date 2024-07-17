@@ -49,6 +49,8 @@
 
 #define LED_RED gpio_pin_44
 #define LED_GREEN gpio_pin_45
+#define TICKS_DELAY 20
+// const TickType_t xDelay = 1000 / portTICK_PERIOD_MS;
 
 /*-----------------------------------------------------------*/
 
@@ -83,10 +85,9 @@ static void blinkRed(void *parameters) {
     (void)parameters;
 
     /* Block for 1 sec. */
-    // const TickType_t xDelay = 100 / portTICK_PERIOD_MS;
     for (;;) {
         toggle_led(LED_RED);
-        vTaskDelay(20); /* delay 100 ticks */
+        vTaskDelay(TICKS_DELAY); /* delay 100 ticks */
     }
 }
 
@@ -99,7 +100,7 @@ static void blinkGreen(void *parameters) {
     // const TickType_t xDelay = 100 / portTICK_PERIOD_MS;
     for (;;) {
         toggle_led(LED_RED);
-        vTaskDelay(50); /* delay 100 ticks */
+        vTaskDelay(TICKS_DELAY); /* delay X ticks */
     }
 }
 /*-----------------------------------------------------------*/
