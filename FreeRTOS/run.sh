@@ -3,7 +3,11 @@
 SRAM_BASE=0x00400000
 SERIAL_PORT=/dev/ttyUSB1
 BAUDRATE=115200
+TELNET_PORT=4444
+TCL_PORT=6666
+GDB_PORT=3333
 TOOLS_PATH=.
+
 
 # TERMINAL=putty -serial -sercfg $BAUDRATE $SERIAL_PORT
 
@@ -16,12 +20,10 @@ BIN=bin/$(basename $ELF .elf).bin
 
 check_bin(){
     echo "Buscando $ELF..."
-        make clean
-    if ! test -f $ELF ; then
-        echo "Generando $ELF..."
-        cmake --fresh
-        make
-    fi
+    cmake --fresh
+    make clean
+    echo "Generando $ELF..."
+    make
 
     if ! test -f $ELF ; then
         echo "Fallo al compilar $ELF"
@@ -42,16 +44,19 @@ check_openocd(){
 
 run(){
     echo "Ejecutando el programa..."
-    echo -e "soft_reset_halt\n load_image $BIN $SRAM_BASE\n resume $SRAM_BASE" | nc -i 1 localhost 3333  > /dev/null
+    echo -e "soft_reset_halt\n load_image $BIN $SRAM_BASE\n resume $SRAM_BASE" | nc -i 1 localhost $TELNET_PORT > /dev/null
+}
+
+debug(){
+    sleep 2 && echo "Lanzando Debugger..."
+    gdb -x break.gdb | tee gdb.log
 }
 
 
 check_bin
 check_openocd
 run &
-
-sleep 2 && echo "Lanzando Debugger..."
-gdb -x break.gdb | tee gdb.log
+debug
 
 # $MC1322X_LOAD -f $BIN -t $SERIAL_PORT
-# $TERMINAL -e "telnet localhost 3333" &
+# $TERMINAL -e "telnet localhost $TELNET_PORT" &
