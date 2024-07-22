@@ -4,7 +4,6 @@ monitor soft_reset_halt
 file bin/Demo.elf
 load bin/Demo.elf
 # break _start
-break main
 # break vTaskStartScheduler
 # break xPortStartScheduler
 # break vPortISRStartFirstTask
@@ -12,11 +11,14 @@ break main
 # break blinkRed
 # break vTaskDelay
 # break blinkRed
-
 # break xTaskIncrementTick
-
 # break vPortYieldProcessor
 # break xTaskResumeAll
+
+break main
+commands
+    info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
+end
 
 # 1
 break vTaskSwitchContext

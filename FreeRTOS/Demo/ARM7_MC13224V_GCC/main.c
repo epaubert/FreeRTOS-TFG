@@ -49,7 +49,7 @@
 
 #define LED_RED gpio_pin_44
 #define LED_GREEN gpio_pin_45
-#define TICKS_DELAY 20
+#define TICKS_DELAY 5
 // const TickType_t xDelay = 1000 / portTICK_PERIOD_MS;
 
 /*-----------------------------------------------------------*/
@@ -84,7 +84,6 @@ static void blinkRed(void *parameters) {
     /* Unused parameters. */
     (void)parameters;
 
-    /* Block for 1 sec. */
     for (;;) {
         toggle_led(LED_RED);
         vTaskDelay(TICKS_DELAY); /* delay 100 ticks */
@@ -96,11 +95,10 @@ static void blinkGreen(void *parameters) {
     /* Unused parameters. */
     (void)parameters;
 
-    /* Block for 1 sec. */
     // const TickType_t xDelay = 100 / portTICK_PERIOD_MS;
     for (;;) {
-        toggle_led(LED_RED);
-        vTaskDelay(TICKS_DELAY); /* delay X ticks */
+        toggle_led(LED_GREEN);
+        vTaskDelay(TICKS_DELAY*2); /* delay X ticks */
     }
 }
 /*-----------------------------------------------------------*/
@@ -118,20 +116,23 @@ void main(void) {
                                  NULL,
                                  configMAX_PRIORITIES - 1U,
                                  NULL);
-
     if (aux != pdPASS)
     {
         gpio_clear_pin(LED_GREEN);
         for(;;){}
     }
 
-    // (void)xTaskCreate( blinkGreen,
+    // aux = xTaskCreate( blinkGreen,
     //                   "BlinkGreen",
     //                   configMINIMAL_STACK_SIZE*2,
     //                   NULL,
     //                   configMAX_PRIORITIES - 1U,
     //                   NULL);
-
+    // if (aux != pdPASS)
+    // {
+    //     gpio_clear_pin(LED_GREEN);
+    //     for(;;){}
+    // }
 
     /* Start the scheduler. */
     vTaskStartScheduler();

@@ -20,8 +20,8 @@ BIN=bin/$(basename $ELF .elf).bin
 
 check_bin(){
     echo "Buscando $ELF..."
-    cmake --fresh
-    make clean
+    # cmake --fresh
+    # make clean
     echo "Generando $ELF..."
     make
 
