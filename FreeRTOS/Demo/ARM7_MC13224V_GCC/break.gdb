@@ -6,10 +6,8 @@ set logging on
 set architecture arm
 target extended-remote localhost:3333
 monitor soft_reset_halt
-file bin/Demo.elf
-load bin/Demo.elf
-
-
+file ../../bin/Demo.elf
+load ../../bin/Demo.elf
 
 # break _start
 # break vTaskStartScheduler

@@ -6,9 +6,9 @@ set(SHELL "${BIN}sh")
 
 set(PORT_DIR "Source/portable/GCC/ARM7_MC13224V/")
 set(DEMO_DIR "Demo/ARM7_MC13224V_GCC/")
-set(TOOL_DIR "tools-econotag/")
+set(TOOL_DIR "${DEMO_DIR}tools-econotag/")
 set(BSP_DIR "${PORT_DIR}bsp/")
-set(LINKER_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/econotag.ld")
+set(LINKER_SCRIPT "${DEMO_DIR}econotag.ld")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

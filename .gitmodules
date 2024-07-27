@@ -1,7 +1,8 @@
 [submodule "FreeRTOS/Source"]
 	path = FreeRTOS/Source
 	; url = https://github.com/FreeRTOS/FreeRTOS-Kernel.git
-    url = https://github.com/epaubert/FreeRTOS-Kernel-TFG.git
+    ; url = https://github.com/epaubert/FreeRTOS-Kernel-TFG.git
+    url = git@github.com:epaubert/FreeRTOS-Kernel-TFG.git
 [submodule "FreeRTOS/Test/CMock/CMock"]
 	path = FreeRTOS/Test/CMock/CMock
 	url = https://github.com/ThrowTheSwitch/CMock.git
