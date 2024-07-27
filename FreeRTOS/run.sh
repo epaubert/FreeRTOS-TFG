@@ -15,6 +15,8 @@ MC1322X_LOAD=$TOOLS_PATH/bin/mc1322x-load
 FLASHER=$TOOLS_PATH/flasher_redbee-econotag.bin
 BBMC=$TOOLS_PATH/bin/bbmc
 
+OPENOCD="openocd -f interface/ftdi/redbee-econotag.cfg -f board/redbee.cfg"
+
 ELF=bin/Demo.elf
 BIN=bin/$(basename $ELF .elf).bin
 
@@ -37,7 +39,7 @@ check_bin(){
 check_openocd(){
     if [ ! `pgrep openocd` ]; then
         echo "Lanzando openocd ..."
-        xterm -e "openocd -f interface/ftdi/redbee-econotag.cfg -f board/redbee.cfg" &
+        xterm -e $OPENOCD &
         sleep 1
     fi
 }
@@ -49,7 +51,7 @@ run(){
 
 debug(){
     sleep 2 && echo "Lanzando Debugger..."
-    gdb -x break.gdb | tee gdb.log
+    gdb -q -x break.gdb #| tee gdb.log
 }
 
 

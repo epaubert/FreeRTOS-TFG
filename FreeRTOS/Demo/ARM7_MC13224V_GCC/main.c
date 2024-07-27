@@ -112,7 +112,7 @@ void main(void) {
 
     BaseType_t aux = xTaskCreate( blinkRed,
                                  "BlinkRed",
-                                 configMINIMAL_STACK_SIZE*4,
+                                 configMINIMAL_STACK_SIZE*3,
                                  NULL,
                                  configMAX_PRIORITIES - 1U,
                                  NULL);

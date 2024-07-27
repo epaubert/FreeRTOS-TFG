@@ -1,8 +1,16 @@
+set pagination off
+set logging file gdb.log
+set logging overwrite
+set logging on
+
 set architecture arm
 target extended-remote localhost:3333
 monitor soft_reset_halt
 file bin/Demo.elf
 load bin/Demo.elf
+
+
+
 # break _start
 # break vTaskStartScheduler
 # break xPortStartScheduler
@@ -29,13 +37,13 @@ commands
     continue
 end
 
-# break prvIdleTask
-# commands
-#     silent
-#     printf "prvIdleTask called\n"
-#     info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
-#     continue
-# end
+break prvIdleTask
+commands
+    # silent
+    # printf "prvIdleTask called\n"
+    info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
+    continue
+end
 
 break vTaskDelay
 commands
