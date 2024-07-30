@@ -18,14 +18,16 @@ OPENOCD="openocd -f interface/ftdi/redbee-econotag.cfg -f board/redbee.cfg"
 ELF=$FREERTOS_PATH/bin/Demo.elf
 BIN=$FREERTOS_PATH/bin/$(basename $ELF .elf).bin
 
+
 check_bin(){
+    cd $FREERTOS_PATH
     echo "Buscando $ELF..."
     # cmake --fresh
     # make clean
     echo "Generando $ELF..."
-    cd $FREERTOS_PATH
     make
     cd -
+    sleep 1
 
     if ! test -f $ELF ; then
         echo "Fallo al compilar $ELF"
@@ -44,6 +46,14 @@ check_openocd(){
     fi
 }
 
+check_putty(){
+    if [ ! `pgrep putty` ]; then
+        echo "Lanzando putty ..."
+        putty -serial -sercfg $BAUDRATE $SERIAL_PORT -fn "Monospace 12"&
+        sleep 1
+    fi
+}
+
 run(){
     echo "Ejecutando el programa..."
     echo -e "soft_reset_halt\n load_image $BIN $SRAM_BASE\n resume $SRAM_BASE" | nc -i 1 localhost $TELNET_PORT > /dev/null
@@ -51,11 +61,12 @@ run(){
 
 debug(){
     sleep 2 && echo "Lanzando Debugger..."
-    gdb -q -x break.gdb #| tee gdb.log
+    gdb -q -x break.gdb
 }
 
 check_bin
 check_openocd
+check_putty
 run &
 debug
 

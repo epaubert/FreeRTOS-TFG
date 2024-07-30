@@ -6,4 +6,6 @@
 *cmake_install.cmake
 *.svg
 *.log
+*.bak
 tmp
+

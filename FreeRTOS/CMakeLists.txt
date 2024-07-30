@@ -114,6 +114,9 @@ target_compile_options(freertos_kernel PRIVATE
 add_executable(Demo.elf
     ${DEMO_DIR}main.c
     # ${DEMO_DIR}ParTest/ParTest.c
+    # Demo/Common/Minimal/integer.c
+    # Demo/Common/Minimal/flash.c
+    # Demo/Common/Minimal/BlockQ.c
 )
 
 target_include_directories( Demo.elf PRIVATE

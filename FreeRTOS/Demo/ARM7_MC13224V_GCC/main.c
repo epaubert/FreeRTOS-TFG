@@ -5,8 +5,7 @@
  * SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
+ * of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
@@ -49,8 +48,7 @@
 
 #define LED_RED gpio_pin_44
 #define LED_GREEN gpio_pin_45
-#define TICKS_DELAY 5
-// const TickType_t xDelay = 1000 / portTICK_PERIOD_MS;
+#define xDelay (TickType_t) 500/portTICK_PERIOD_MS
 
 /*-----------------------------------------------------------*/
 
@@ -62,85 +60,132 @@ void led_init() {
     gpio_clear_pin(LED_GREEN);
 }
 
-void toggle_led(gpio_pin_t LED) {
-    static uint32_t red_led_state   = 0;
-    static uint32_t green_led_state = 0;
+// void toggle_led(gpio_pin_t LED) {
+//     static uint32_t red_led_state   = 0;
+//     static uint32_t green_led_state = 0;
+//
+//     uint32_t *led_state = LED == LED_RED ? &red_led_state : &green_led_state;
+//
+//     if (*led_state)
+//         gpio_clear_pin(LED);
+//     else
+//         gpio_set_pin(LED);
+//
+//     *led_state = !*(led_state);
+// }
 
-    uint32_t *led_state = LED == LED_RED ? &red_led_state : &green_led_state;
+static void toggle_led_red() {
+    static uint32_t led_state   = 0;
+    uint32_t LED = LED_RED;
 
-    if (*led_state)
+    if (led_state)
         gpio_clear_pin(LED);
     else
         gpio_set_pin(LED);
 
-    *led_state = !*(led_state);
+    led_state = !(led_state);
 }
 
+static void toggle_led_green() {
+    static uint32_t led_state   = 1;
+    uint32_t LED = LED_GREEN;
+
+    if (led_state)
+        gpio_clear_pin(LED);
+    else
+        gpio_set_pin(LED);
+
+    led_state = !(led_state);
+}
+
+void print_str(char * str)
+{
+        uart_send(UART1_ID, str, strlen(str));
+}
 
 /*-----------------------------------------------------------*/
 
 // Task 1:
-static void blinkRed(void *parameters) {
+static void vBlinkRed(void *parameters) {
+    portENTER_CRITICAL();
     /* Unused parameters. */
     (void)parameters;
 
     for (;;) {
-        toggle_led(LED_RED);
-        vTaskDelay(TICKS_DELAY); /* delay 100 ticks */
+        portENTER_CRITICAL();
+        toggle_led_red();
+        print_str("ROJO\r\n");
+        portEXIT_CRITICAL();
+        vTaskDelay(xDelay); /* delay 100 ticks */
     }
+    vTaskDelete(NULL);
 }
 
 // Task 2:
-static void blinkGreen(void *parameters) {
+static void vBlinkGreen(void *parameters) {
     /* Unused parameters. */
     (void)parameters;
 
-    // const TickType_t xDelay = 100 / portTICK_PERIOD_MS;
     for (;;) {
-        toggle_led(LED_GREEN);
-        vTaskDelay(TICKS_DELAY*2); /* delay X ticks */
+        portENTER_CRITICAL();
+        toggle_led_green();
+        print_str("VERDE\r\n");
+        portEXIT_CRITICAL();
+        vTaskDelay(xDelay); /* delay X ticks */
     }
+    vTaskDelete(NULL);
 }
 /*-----------------------------------------------------------*/
 
 void main(void) {
-    (void)printf("Example FreeRTOS Project\n");
+    // iprintf("Example FreeRTOS Project\r\n");
+    print_str("Example FreeRTOS Project\r\n");
 
     led_init();
 
     gpio_set_pin(LED_GREEN);
 
-    BaseType_t aux = xTaskCreate( blinkRed,
-                                 "BlinkRed",
-                                 configMINIMAL_STACK_SIZE*3,
-                                 NULL,
-                                 configMAX_PRIORITIES - 1U,
-                                 NULL);
+    TaskHandle_t *red, *green;
+    BaseType_t aux;
+
+    aux = xTaskCreate( vBlinkRed,
+                      "BlinkyRed",
+                      configMINIMAL_STACK_SIZE,
+                      NULL,
+                      configMAX_PRIORITIES - 1U,
+                      red);
     if (aux != pdPASS)
     {
         gpio_clear_pin(LED_GREEN);
         for(;;){}
     }
+    else {
+        // iprintf("Task BlinkyRed creada con éxito\r\n");
+        print_str("Task BlinkyRed creada con éxito\r\n");
+    }
 
-    // aux = xTaskCreate( blinkGreen,
-    //                   "BlinkGreen",
-    //                   configMINIMAL_STACK_SIZE*2,
-    //                   NULL,
-    //                   configMAX_PRIORITIES - 1U,
-    //                   NULL);
-    // if (aux != pdPASS)
-    // {
-    //     gpio_clear_pin(LED_GREEN);
-    //     for(;;){}
-    // }
+    aux = xTaskCreate( vBlinkGreen,
+                      "BlinkyGreen",
+                      configMINIMAL_STACK_SIZE,
+                      NULL,
+                      configMAX_PRIORITIES - 1U,
+                      green);
+    if (aux != pdPASS)
+    {
+        gpio_clear_pin(LED_GREEN);
+        for(;;){}
+    }
+    else {
+        // iprintf("Task BlinkyRed creada con éxito\r\n");
+        print_str("Task BlinkyGreen creada con éxito\r\n");
+    }
 
     /* Start the scheduler. */
     vTaskStartScheduler();
 
     /* Should not reach here. */
     gpio_clear_pin(LED_GREEN);
-    for (;;) {
-    }
+    for (;;) {}
 }
 /*-----------------------------------------------------------*/
 
