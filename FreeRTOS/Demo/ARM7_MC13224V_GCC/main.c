@@ -35,10 +35,10 @@
 
 /* FreeRTOS includes. */
 #include <FreeRTOS.h>
-#include <queue.h>
-#include <semphr.h>
+// #include <queue.h>
+// #include <semphr.h>
+// #include <timers.h>
 #include <task.h>
-#include <timers.h>
 #include "partest.h"
 
 /* Standard includes. */
@@ -46,116 +46,88 @@
 
 /*-----------------------------------------------------------*/
 
-#define LED_RED gpio_pin_44
-#define LED_GREEN gpio_pin_45
+// #define TASK_RED
+// #define TASK_GREEN
+#define TASK_MATH
+#define TASK_LEDS
+
+/*-----------------------------------------------------------*/
+
 #define xDelay (TickType_t) 500/portTICK_PERIOD_MS
 
-/*-----------------------------------------------------------*/
+#define LED_RED gpio_pin_44
+#define LED_GREEN gpio_pin_45
 
-void led_init() {
-    gpio_set_pin_dir_output(LED_RED);
-    gpio_clear_pin(LED_RED);
+void vStartLEDFlashTasks( UBaseType_t uxPriority );
 
-    gpio_set_pin_dir_output(LED_GREEN);
-    gpio_clear_pin(LED_GREEN);
-}
+void toggle_led(gpio_pin_t LED) {
+    static uint8_t red_led_state   = 0;
+    static uint8_t green_led_state = 0;
 
-// void toggle_led(gpio_pin_t LED) {
-//     static uint32_t red_led_state   = 0;
-//     static uint32_t green_led_state = 0;
-//
-//     uint32_t *led_state = LED == LED_RED ? &red_led_state : &green_led_state;
-//
-//     if (*led_state)
-//         gpio_clear_pin(LED);
-//     else
-//         gpio_set_pin(LED);
-//
-//     *led_state = !*(led_state);
-// }
+    uint8_t *led_state = LED == LED_RED ? &red_led_state : &green_led_state;
 
-static void toggle_led_red() {
-    static uint32_t led_state   = 0;
-    uint32_t LED = LED_RED;
-
-    if (led_state)
+    if (*led_state)
         gpio_clear_pin(LED);
     else
         gpio_set_pin(LED);
 
-    led_state = !(led_state);
+    *led_state = ~(*led_state);
 }
 
-static void toggle_led_green() {
-    static uint32_t led_state   = 1;
-    uint32_t LED = LED_GREEN;
-
-    if (led_state)
-        gpio_clear_pin(LED);
-    else
-        gpio_set_pin(LED);
-
-    led_state = !(led_state);
-}
-
-void print_str(char * str)
+static inline void print_str(char * str)
 {
-        uart_send(UART1_ID, str, strlen(str));
+    uart_send(UART1_ID, str, strlen(str));
 }
 
 /*-----------------------------------------------------------*/
-
 // Task 1:
 static void vBlinkRed(void *parameters) {
     portENTER_CRITICAL();
-    /* Unused parameters. */
-    (void)parameters;
 
     for (;;) {
         portENTER_CRITICAL();
-        toggle_led_red();
+        toggle_led(LED_RED);
         print_str("ROJO\r\n");
-        portEXIT_CRITICAL();
         vTaskDelay(xDelay); /* delay 100 ticks */
+        portEXIT_CRITICAL() 
     }
     vTaskDelete(NULL);
+
+    /* Unused parameters. */
+    (void)parameters;
 }
 
 // Task 2:
 static void vBlinkGreen(void *parameters) {
-    /* Unused parameters. */
-    (void)parameters;
+    portENTER_CRITICAL();
 
     for (;;) {
         portENTER_CRITICAL();
-        toggle_led_green();
+        toggle_led(LED_GREEN);
         print_str("VERDE\r\n");
-        portEXIT_CRITICAL();
-        vTaskDelay(xDelay); /* delay X ticks */
+        vTaskDelay(xDelay*2); /* delay X ticks */
+        portEXIT_CRITICAL() ;
     }
     vTaskDelete(NULL);
+
+    /* Unused parameters. */
+    (void)parameters;
 }
 /*-----------------------------------------------------------*/
+void launchTasks(){
 
-void main(void) {
-    // iprintf("Example FreeRTOS Project\r\n");
-    print_str("Example FreeRTOS Project\r\n");
-
-    led_init();
-
-    gpio_set_pin(LED_GREEN);
-
-    TaskHandle_t *red, *green;
     BaseType_t aux;
 
+    #ifdef TASK_RED
     aux = xTaskCreate( vBlinkRed,
                       "BlinkyRed",
                       configMINIMAL_STACK_SIZE,
                       NULL,
                       configMAX_PRIORITIES - 1U,
-                      red);
+                      NULL);
     if (aux != pdPASS)
     {
+        print_str("Fallo al crear BlinkyRed\r\n");
         gpio_clear_pin(LED_GREEN);
         for(;;){}
     }
@@ -163,22 +135,48 @@ void main(void) {
         // iprintf("Task BlinkyRed creada con éxito\r\n");
         print_str("Task BlinkyRed creada con éxito\r\n");
     }
+    #endif
 
+    #ifdef TASK_GREEN
     aux = xTaskCreate( vBlinkGreen,
                       "BlinkyGreen",
                       configMINIMAL_STACK_SIZE,
                       NULL,
-                      configMAX_PRIORITIES - 1U,
-                      green);
+                      configMAX_PRIORITIES - 2U,
+                      NULL);
     if (aux != pdPASS)
     {
+        print_str("Fallo al crear BlinkyGreen\r\n");
         gpio_clear_pin(LED_GREEN);
         for(;;){}
     }
     else {
-        // iprintf("Task BlinkyRed creada con éxito\r\n");
         print_str("Task BlinkyGreen creada con éxito\r\n");
     }
+    #endif
+
+    #ifdef TASK_LEDS
+    vStartLEDFlashTasks( configMAX_PRIORITIES - 2U );
+    #endif
+
+    #ifdef TASK_MATH
+    vStartIntegerMathTasks( configMAX_PRIORITIES - 1U );
+    #endif
+
+
+}
+/*-----------------------------------------------------------*/
+
+void main(void) {
+    // iprintf("Example FreeRTOS Project\r\n");
+    print_str("\r\n\r\nExample FreeRTOS Project\r\n");
+
+    // led_init();
+    vParTestInitialise();
+
+    vParTestSetLED( LED_GREEN, 0 );
+
+    launchTasks();
 
     /* Start the scheduler. */
     vTaskStartScheduler();

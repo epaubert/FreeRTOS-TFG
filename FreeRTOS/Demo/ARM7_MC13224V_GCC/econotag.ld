@@ -45,12 +45,12 @@ SECTIONS
 
         /* Gestión de las pilas */
         _ram_limit = ORIGIN(ram) + LENGTH(ram);
-        _sys_stack_size = 1024 ;
-        _irq_stack_size =  256 ;
+        _sys_stack_size = 4092 ;
+        _irq_stack_size = 4092 ;
         _fiq_stack_size =  256 ;
-        _svc_stack_size =  256 ;
-        _abt_stack_size =   16 ;
-        _und_stack_size =   16 ;
+        _svc_stack_size = 4092 ;
+        _abt_stack_size =   32 ;
+        _und_stack_size =   32 ;
         _stacks_size    = _stacks_top - _stacks_bottom ;
         .stacks _ram_limit - _stacks_size :
         {

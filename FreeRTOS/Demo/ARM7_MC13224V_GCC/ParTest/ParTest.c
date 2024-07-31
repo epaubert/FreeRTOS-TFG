@@ -40,48 +40,66 @@
 #define partstFIRST_IO			gpio_pin_44
 #define partstNUM_LEDS			( 2 )
 
-void led_init() {
+/*-----------------------------------------------------------
+ * Simple parallel port IO routines.
+ *-----------------------------------------------------------*/
+
+static inline void print_str(char * str)
+{
+    uart_send(UART1_ID, str, strlen(str));
+}
+
+void vParTestInitialise( void )
+{
+    print_str("vParTestInitialise\r\n");
     gpio_set_pin_dir_output(LED_RED);
     gpio_clear_pin(LED_RED);
 
     gpio_set_pin_dir_output(LED_GREEN);
     gpio_clear_pin(LED_GREEN);
 }
+/*-----------------------------------------------------------*/
 
-void toggle_led(gpio_pin_t LED) {
+inline void vParTestSetLED( unsigned portBASE_TYPE uxLED, signed portBASE_TYPE xValue )
+{
+    print_str("vParTestSetLED\r\n");
+    if (uxLED <= LED_GREEN ){
+        if (xValue)
+            gpio_clear_pin(uxLED);
+        else
+            gpio_set_pin(uxLED);
+    }
+    else {
+            print_str("vParTestSetLED: Led no válido\r\n");
+
+    }
+}
+/*-----------------------------------------------------------*/
+
+void vParTestToggleLED( unsigned portBASE_TYPE uxLED )
+{
+    switch (uxLED) {
+        case LED_RED:
+            print_str("vParTestToggleLED Rojo\r\n");
+            break;
+        case LED_GREEN:
+            print_str("vParTestToggleLED Verde\r\n");
+            break;
+        default:
+            print_str("vParTestToggleLED ERROR\r\n");
+
+    }
+
     static uint32_t red_led_state   = 0;
     static uint32_t green_led_state = 0;
 
-    uint32_t *led_state = LED == LED_RED ? &red_led_state : &green_led_state;
+    uint32_t *led_state = uxLED == LED_RED ? &red_led_state : &green_led_state;
 
     if (*led_state)
-        gpio_clear_pin(LED);
+        gpio_clear_pin(uxLED);
     else
-        gpio_set_pin(LED);
+        gpio_set_pin(uxLED);
 
     *led_state = !*(led_state);
-}
-
-
-/*-----------------------------------------------------------
- * Simple parallel port IO routines.
- *-----------------------------------------------------------*/
-
-void vParTestInitialise( void )
-{
-    led_init();
-}
-/*-----------------------------------------------------------*/
-
-void vParTestSetLED( unsigned portBASE_TYPE uxLED, signed portBASE_TYPE xValue )
-{
-    gpio_set_pin(LED_RED);
-    gpio_set_pin(LED_GREEN);
-}
-/*-----------------------------------------------------------*/
-
-inline void vParTestToggleLED( unsigned portBASE_TYPE uxLED )
-{
-    toggle_led(uxLED);
 }
 

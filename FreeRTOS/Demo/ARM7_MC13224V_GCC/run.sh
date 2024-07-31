@@ -17,17 +17,19 @@ OPENOCD="openocd -f interface/ftdi/redbee-econotag.cfg -f board/redbee.cfg"
 
 ELF=$FREERTOS_PATH/bin/Demo.elf
 BIN=$FREERTOS_PATH/bin/$(basename $ELF .elf).bin
+OBJDUM=Demo.dump
 
 
 check_bin(){
-    cd $FREERTOS_PATH
-    echo "Buscando $ELF..."
-    # cmake --fresh
-    # make clean
+    # echo "Limpiando $ELF..."
+    # rm $ELF
     echo "Generando $ELF..."
-    make
+    cd $FREERTOS_PATH
+    # make clean && sleep 1
+    make 
     cd -
-    sleep 1
+
+    sleep 2
 
     if ! test -f $ELF ; then
         echo "Fallo al compilar $ELF"
@@ -36,6 +38,9 @@ check_bin(){
 
     echo "Generando $BIN..."
     arm-none-eabi-objcopy -O binary $ELF $BIN
+
+    echo "Generando $OBJDUMP..."
+    arm-none-eabi-objdump -D $ELF > $OBJDUM
 }
 
 check_openocd(){

@@ -43,19 +43,19 @@
  *----------------------------------------------------------*/
 
 #define configUSE_PREEMPTION		1
+#define configUSE_TIME_SLICING      1
 #define configUSE_IDLE_HOOK			0
 #define configUSE_TICK_HOOK			0
-#define configCPU_CLOCK_HZ			( ( unsigned long ) 24000000 )	/* =14.7456MHz xtal multiplied by 4 using the PLL. */
-#define configTICK_RATE_HZ			( ( TickType_t ) 10 )
-#define configMAX_PRIORITIES		( 5 )
-#define configMINIMAL_STACK_SIZE	( (  uint32_t ) 256 )
-#define configTOTAL_HEAP_SIZE		( ( size_t ) ( 36 * 1024 ) )
+#define configCPU_CLOCK_HZ			( ( unsigned long ) 20000000 )
+#define configTICK_RATE_HZ			( ( TickType_t ) 1 )
+#define configMAX_PRIORITIES		( 7 )
+#define configMINIMAL_STACK_SIZE	( (  uint32_t ) 128 )
+#define configTOTAL_HEAP_SIZE		( ( size_t ) ( 40 * 1024 ) )
 #define configMAX_TASK_NAME_LEN		( 16 )
 #define configUSE_TRACE_FACILITY	0
 #define configUSE_16_BIT_TICKS		0
 #define configIDLE_SHOULD_YIELD		1
 #define configQUEUE_REGISTRY_SIZE	0
-
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 		0
 #define configMAX_CO_ROUTINE_PRIORITIES ( 2 )

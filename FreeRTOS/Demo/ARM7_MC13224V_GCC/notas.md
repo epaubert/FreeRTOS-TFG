@@ -16,3 +16,7 @@
     <!-- * cpsr = 0x20000092 -->
 
 Puede que se esté interrumpiendo blinkRed con un tick y no tenga tiempo para hacer suficiente entre ticks o no se esté restaurando el contexto correctamente
+
+
+
+hay un problema de corrupción de memoria, comparar los registros en las llamadas a increment tick

@@ -9,6 +9,7 @@ set(DEMO_DIR "Demo/ARM7_MC13224V_GCC/")
 set(TOOL_DIR "${DEMO_DIR}tools-econotag/")
 set(BSP_DIR "${PORT_DIR}bsp/")
 set(LINKER_SCRIPT "${DEMO_DIR}econotag.ld")
+set(OPTIM "-Os")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -27,7 +28,7 @@ set(CMAKE_AR "${CROSS_COMPILE}ar")
 set(CMAKE_EXE_LINKER_FLAGS "-specs=nosys.specs" CACHE INTERNAL "")
 
 # Flags
-set(CFLAGS "-c -g -Og -Wall -mcpu=arm7tdmi") # -mthumb -mthumb-interwork
+set(CFLAGS "-c -g ${OPTIM} -Wall -mcpu=arm7tdmi") # -mthumb -mthumb-interwork
 set(ASFLAGS "-gstabs -mcpu=arm7tdmi -mfpu=softfpa") # -mthumb
 set(ARFLAGS "-src")
 set(LDFLAGS 
@@ -92,7 +93,7 @@ target_compile_options(freertos_kernel PRIVATE
     $<$<COMPILE_LANG_AND_ID:C,Clang>:-fcolor-diagnostics>
 
     $<$<COMPILE_LANG_AND_ID:C,GNU>:-g>
-    $<$<COMPILE_LANG_AND_ID:C,GNU>:-Og>
+    $<$<COMPILE_LANG_AND_ID:C,GNU>:${OPTIM}>
     $<$<COMPILE_LANG_AND_ID:C,GNU>:-mcpu=arm7tdmi >
     # $<$<COMPILE_LANG_AND_ID:C,GNU>:-mthumb>
     # $<$<COMPILE_LANG_AND_ID:C,GNU>:-mthumb-interwork >
@@ -113,9 +114,9 @@ target_compile_options(freertos_kernel PRIVATE
 
 add_executable(Demo.elf
     ${DEMO_DIR}main.c
-    # ${DEMO_DIR}ParTest/ParTest.c
-    # Demo/Common/Minimal/integer.c
-    # Demo/Common/Minimal/flash.c
+    ${DEMO_DIR}ParTest/ParTest.c
+    ${DEMO_DIR}ParTest/integer.c
+    ${DEMO_DIR}ParTest/flash.c
     # Demo/Common/Minimal/BlockQ.c
 )
 
