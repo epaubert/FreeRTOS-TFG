@@ -123,10 +123,10 @@ static portTASK_FUNCTION( vCompeteingIntMathTask, pvParameters )
         if( lValue != intgEXPECTED_ANSWER ) /*lint !e774 volatile used to prevent this being optimised out. */
         {
             sError = pdTRUE;
-            print_str("vCompeteingIntMathTask ERROR\r\n");
+            print_str("ERROR vCompeteingIntMathTask\r\n");
         }
         else {
-            print_str("vCompeteingIntMathTask SUCCESS\r\n");
+            print_str("SUCCESS vCompeteingIntMathTask\r\n");
         }
 
         if( sError == pdFALSE )

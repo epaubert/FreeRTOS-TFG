@@ -97,15 +97,6 @@ end
 # continue
 # end
 
-# break toggle_led
-# commands
-# # silent
-# # printf "toggle_led called\n"
-# # info registers
-# #info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
-# continue
-# end
-
 # break vBlinkGreen
 # commands
 # # info registers
@@ -113,9 +104,15 @@ end
 # continue
 # end
 
+break vParTestSetLED
+commands
+# info registers lr
+continue
+end
+
 break vParTestToggleLED
 commands
-info registers
+# info registers lr
 continue
 end
 

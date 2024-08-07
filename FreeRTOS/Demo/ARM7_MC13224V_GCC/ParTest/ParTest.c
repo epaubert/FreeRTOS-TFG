@@ -51,7 +51,7 @@ static inline void print_str(char * str)
 
 void vParTestInitialise( void )
 {
-    print_str("vParTestInitialise\r\n");
+    // print_str("vParTestInitialise\r\n");
     gpio_set_pin_dir_output(LED_RED);
     gpio_clear_pin(LED_RED);
 
@@ -62,7 +62,7 @@ void vParTestInitialise( void )
 
 inline void vParTestSetLED( unsigned portBASE_TYPE uxLED, signed portBASE_TYPE xValue )
 {
-    print_str("vParTestSetLED\r\n");
+    // print_str("vParTestSetLED\r\n");
     if (uxLED <= LED_GREEN ){
         if (xValue)
             gpio_clear_pin(uxLED);
@@ -70,24 +70,24 @@ inline void vParTestSetLED( unsigned portBASE_TYPE uxLED, signed portBASE_TYPE x
             gpio_set_pin(uxLED);
     }
     else {
-            print_str("vParTestSetLED: Led no válido\r\n");
-
+        print_str("vParTestSetLED: Led no válido\r\n");
     }
 }
 /*-----------------------------------------------------------*/
 
 void vParTestToggleLED( unsigned portBASE_TYPE uxLED )
 {
+    portENTER_CRITICAL();
     switch (uxLED) {
         case LED_RED:
-            print_str("vParTestToggleLED Rojo\r\n");
+            print_str("Rojo vParTestToggleLED\r\n");
             break;
         case LED_GREEN:
-            print_str("vParTestToggleLED Verde\r\n");
+            print_str("Verde vParTestToggleLED\r\n");
             break;
         default:
-            print_str("vParTestToggleLED ERROR\r\n");
-
+            print_str("ERROR vParTestToggleLED\r\n");
+            break;
     }
 
     static uint32_t red_led_state   = 0;
@@ -95,11 +95,9 @@ void vParTestToggleLED( unsigned portBASE_TYPE uxLED )
 
     uint32_t *led_state = uxLED == LED_RED ? &red_led_state : &green_led_state;
 
-    if (*led_state)
-        gpio_clear_pin(uxLED);
-    else
-        gpio_set_pin(uxLED);
+    vParTestSetLED(uxLED, *led_state);
 
     *led_state = !*(led_state);
+    portEXIT_CRITICAL();
 }
 

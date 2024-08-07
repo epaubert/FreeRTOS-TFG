@@ -52,7 +52,7 @@
 
 #define ledSTACK_SIZE         configMINIMAL_STACK_SIZE
 #define ledNUMBER_OF_LEDS     ( 2 )
-#define ledFLASH_RATE_BASE    ( ( TickType_t ) 10 )
+#define ledFLASH_RATE_BASE    ( ( TickType_t ) 20 )
 
 static inline void print_str(char * str)
 {
@@ -77,13 +77,7 @@ void vStartLEDFlashTasks( UBaseType_t uxPriority )
     {
         /* Spawn the task. */
         BaseType_t aux = xTaskCreate( vLEDFlashTask, "LEDx", ledSTACK_SIZE, NULL, uxPriority, ( TaskHandle_t * ) NULL );
-        // if (aux == pdPASS){
-        //     print_str("Tarea Led creada\r\n");
-        // } else {
-        //     print_str("Fallo al crear tarea LED\r\n");
-        // }
-        print_str("Creando tarea de led...\r\n");
-        // print_str("vStartLEDFlashTasks\r\n");
+        // print_str("Creando tarea de led...\r\n");
     }
 }
 /*-----------------------------------------------------------*/
@@ -132,7 +126,7 @@ static portTASK_FUNCTION( vLEDFlashTask, pvParameters )
     }
 
 
-    portENTER_CRITICAL();
+    // portENTER_CRITICAL();
     for( ; ; )
     {
         // print_str("vLEDFlashTask\r\n");
@@ -150,5 +144,5 @@ static portTASK_FUNCTION( vLEDFlashTask, pvParameters )
 
         // print_str("Parpadeando...\r\n");
     }
-    portEXIT_CRITICAL();
+    // portEXIT_CRITICAL();
 } /*lint !e715 !e818 !e830 Function definition must be standard for task creation. */
