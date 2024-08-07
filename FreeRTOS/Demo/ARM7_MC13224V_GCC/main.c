@@ -48,7 +48,7 @@
 
 // #define TASK_RED
 // #define TASK_GREEN
-#define TASK_MATH
+// #define TASK_MATH
 #define TASK_LEDS
 
 /*-----------------------------------------------------------*/

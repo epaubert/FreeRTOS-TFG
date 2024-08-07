@@ -73,7 +73,7 @@ commands
 # silent
 # printf "vTickISR called\n"
 # info registers
-# info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
+info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
 continue
 end
 
@@ -81,7 +81,7 @@ break xTaskIncrementTick
 commands
 # silent
 # printf "xTaskIncrementTick called\n"
-print xTickCount
+# print xTickCount
 # info registers
 # info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
 continue
