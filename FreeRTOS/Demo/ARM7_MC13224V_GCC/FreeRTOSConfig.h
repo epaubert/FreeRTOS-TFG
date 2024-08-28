@@ -1,5 +1,5 @@
 /*
- * FreeRTOS V202212.00
+ * FreeRTOS V202212.00 
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -42,14 +42,15 @@
  * See http://www.freertos.org/a00110.html
  *----------------------------------------------------------*/
 
+#define configNUMBER_OF_CORES		1
 #define configUSE_PREEMPTION		1
 #define configUSE_TIME_SLICING      1
 #define configUSE_IDLE_HOOK			0
 #define configUSE_TICK_HOOK			0
-#define configCPU_CLOCK_HZ			( ( unsigned long ) 24000000 )
-#define configTICK_RATE_HZ			( ( TickType_t ) 4 )
-#define configMAX_PRIORITIES		( 7 )
-#define configMINIMAL_STACK_SIZE	( (  uint32_t ) 128 )
+#define configCPU_CLOCK_HZ			( ( unsigned long ) 20000000 )
+#define configTICK_RATE_HZ			( ( TickType_t ) 10 )
+#define configMAX_PRIORITIES		( 8 )
+#define configMINIMAL_STACK_SIZE	( (  uint32_t ) 2048 )
 #define configTOTAL_HEAP_SIZE		( ( size_t ) ( 40 * 1024 ) )
 #define configMAX_TASK_NAME_LEN		( 16 )
 #define configUSE_TRACE_FACILITY	0
@@ -59,6 +60,7 @@
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 		0
 #define configMAX_CO_ROUTINE_PRIORITIES ( 2 )
+#define configCHECK_FOR_STACK_OVERFLOW 1
 
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */

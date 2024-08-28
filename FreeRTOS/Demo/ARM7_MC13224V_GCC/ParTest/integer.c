@@ -40,7 +40,7 @@
 /* Demo program include files. */
 #include "integer.h"
 
-// FIXME: El procesador no puede realizar divisiones
+// FIXME: El procesador no puede realizar divisiones ??
 //
 /* The constants used in the calculation. */
 #define intgCONST1             ( ( long ) 123 )
@@ -54,8 +54,7 @@
 /* As this is the minimal version, we will only create one task. */
 #define intgNUMBER_OF_TASKS    ( 1 )
 
-static inline void print_str(char * str)
-{
+static inline void print_str(char * str){
     uart_send(UART1_ID, str, strlen(str));
 }
 
@@ -98,7 +97,7 @@ static portTASK_FUNCTION( vCompeteingIntMathTask, pvParameters )
     pxTaskHasExecuted = ( volatile BaseType_t * ) pvParameters;
 
     /* Keep performing a calculation and checking the result against a constant. */
-    portENTER_CRITICAL();
+    // portENTER_CRITICAL();
     for( ; ; )
     {
         /* Perform the calculation.  This will store partial value in
@@ -146,7 +145,7 @@ static portTASK_FUNCTION( vCompeteingIntMathTask, pvParameters )
         }
         #endif
     }
-    portEXIT_CRITICAL();
+    // portEXIT_CRITICAL();
 }
 /*-----------------------------------------------------------*/
 
@@ -173,3 +172,4 @@ BaseType_t xAreIntegerMathsTaskStillRunning( void )
 
     return xReturn;
 }
+

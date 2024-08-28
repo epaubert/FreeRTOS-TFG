@@ -14,26 +14,76 @@ load ../../bin/Demo.elf
 # Layout
 # layout split
 
-# break _start
-# break vTaskStartScheduler
-# break xPortStartScheduler
-# break vPortISRStartFirstTask
-# break vTickISR
-# break blinkRed
-# break vTaskDelay
-# break blinkRed
-# break xTaskIncrementTick
-# break vPortYieldProcessor
-# break xTaskResumeAll
+break _start
+commands
+info registers
+# #info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
+continue
+end
 
 break main
 commands
-info registers
+# info registers
 # #info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
 # continue
 end
 
-# 1
+break vApplicationStackOverflowHook
+commands
+info registers
+x/5c $r1
+continue
+end
+
+break vCrash
+commands
+info registers
+end
+
+
+break excep_nonnested_fiq_handler_asm
+commands
+# silent
+# printf "\n\nexcep_nonnested_fiq_handler_asm\n"
+# info registers sp sp_usr sp_irq sp_fiq sp_svc 
+info registers sp sp_fiq
+continue
+end
+
+break itc_service_fast_interrupt
+commands
+# silent
+# printf "itc_service_fast_interrupt\n"
+# info registers sp sp_usr sp_irq sp_fiq sp_svc 
+info registers sp sp_fiq
+continue
+end
+
+break vTickISR
+commands
+# silent
+# printf "vTickISR called\n"
+# info registers lr lr_irq lr_svc
+# info registers sp sp_usr sp_irq sp_fiq sp_svc 
+info registers sp sp_fiq
+continue
+end
+
+# break xTaskIncrementTick
+# commands
+# # silent
+# # printf "xTaskIncrementTick called\n"
+# print xTickCount
+# # info registers
+# # info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
+# continue
+# end
+
+# break clearInt
+# commands
+# continue
+# end
+
 # break vTaskSwitchContext
 # commands
 # # silent
@@ -58,7 +108,15 @@ end
 # continue
 # end
 
-# 1
+# break vTaskDelayUntil
+# commands
+#     # silent
+#     # printf "vTaskDelay called\n"
+#     # info registers
+# #info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
+# continue
+# end
+
 # break vPortYieldProcessor
 # commands
 # # silent
@@ -68,26 +126,6 @@ end
 # continue
 # end
 
-break vTickISR
-commands
-# silent
-# printf "vTickISR called\n"
-# info registers
-info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
-continue
-end
-
-break xTaskIncrementTick
-commands
-# silent
-# printf "xTaskIncrementTick called\n"
-# print xTickCount
-# info registers
-# info registers cpsr spsr_irq spsr_svc lr lr_irq lr_svc
-continue
-end
-
-# 1
 # break vBlinkRed
 # commands
 #     # silent
@@ -104,72 +142,103 @@ end
 # continue
 # end
 
-break vParTestSetLED
-commands
+# break vParTestSetLED
+# commands
+# info registers r0
+# continue
+# end
+#
+# break vParTestToggleLED
+# commands
 # info registers lr
-continue
-end
+# # info registers r0
+# continue
+# end
 
-break vParTestToggleLED
-commands
-# info registers lr
-continue
-end
+# break vFibonacciTask
+# commands
+# continue
+# end
 
-break vParTestInitialise
-commands
+# break print_int
+# commands
+# continue
+# end
+
+# break vParTestInitialise
+# commands
+# # info registers lr cpsr
+# continue 
+# end
+
+# break vStartLEDFlashTasks
+# commands
+# # info registers lr cpsr
+# continue 
+# end
+
+# break vLEDFlashTask
+# commands
 # info registers lr cpsr
-continue 
-end
+# continue 
+# end
 
-break vParTestSetLED
-commands
-# info registers lr cpsr
-continue 
-end
-
-break vStartLEDFlashTasks
-commands
-# info registers lr cpsr
-continue 
-end
-
-break vLEDFlashTask
-commands
-info registers lr cpsr
-continue 
-end
-
-break vParTestSetLED
-commands
-# info registers lr cpsr
-continue 
-end
+# break vParTestSetLED
+# commands
+# # info registers lr cpsr
+# continue 
+# end
 
 # break _soft_reset_handler
 # commands
-# continue
+# info registers
 # end
-# break _undef_handler
-# commands
+
+break _undef_handler
+commands
+info registers
 # continue
-# end
+end
+
 # break _swi_handler
 # commands
 # continue
 # end
-# break _pabt_handler
-# commands
+
+break _pabt_handler
+commands
+info registers
 # continue
-# end
-# break _dabt_handler
-# commands
+end
+
+break _dabt_handler
+commands
+info registers
 # continue
-# end
+end
+
 # break _irq_handler
 # commands
 # continue
 # end
+
+# break itc_service_fast_interrupt
+# commands
+# info registers lr
+# continue
+# end
+
+# break excep_nested_irq_handler
+# commands
+# info registers
+# continue
+# end
+
+# break itc_service_normal_interrupt
+# commands
+# info registers lr
+# end
+
 # break _fiq_handler
 # commands
 # continue
@@ -182,6 +251,13 @@ end
 # continue
 # end
 
+# break print_str
+# commands
+# info registers lr
+# # info registers r0
+# continue
+# end
+
 # TODO: hacer un watch en los bits de interrupciones
 # watch *(volatile uint32_t*)0xADDRESS
 # commands
@@ -190,4 +266,5 @@ end
 #     continue
 # end
 
+# layout split
 continue

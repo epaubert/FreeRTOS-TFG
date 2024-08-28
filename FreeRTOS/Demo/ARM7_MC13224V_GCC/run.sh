@@ -61,7 +61,7 @@ check_putty(){
 
 run(){
     echo "Ejecutando el programa..."
-    echo -e "soft_reset_halt\n load_image $BIN $SRAM_BASE\n resume $SRAM_BASE" | nc -i 1 localhost $TELNET_PORT > /dev/null
+    echo -e "soft_reset_halt\n load_image $BIN $SRAM_BASE\n resume $SRAM_BASE" | nc -i 1 localhost 4444 > /dev/null
 }
 
 debug(){
@@ -73,7 +73,10 @@ check_bin
 check_openocd
 check_putty
 run &
-debug
+if [ "$1" = "debug" ]; then
+    debug
+fi
+
 
 # $MC1322X_LOAD -f $BIN -t $SERIAL_PORT
 # $TERMINAL -e "telnet localhost $TELNET_PORT" &

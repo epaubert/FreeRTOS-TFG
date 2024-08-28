@@ -52,16 +52,18 @@
 
 #define ledSTACK_SIZE         configMINIMAL_STACK_SIZE
 #define ledNUMBER_OF_LEDS     ( 2 )
-#define ledFLASH_RATE_BASE    ( ( TickType_t ) 20 )
+#define ledFLASH_RATE_BASE    ( ( TickType_t ) 600 )
 
-static inline void print_str(char * str)
-{
+#define LED_RED     gpio_pin_44
+#define LED_GREEN   gpio_pin_45
+
+static inline void print_str(char * str){
     uart_send(UART1_ID, str, strlen(str));
 }
 
 /* Variable used by the created tasks to calculate the LED number to use, and
  * the rate at which they should flash the LED. */
-static volatile UBaseType_t uxFlashTaskNumber = gpio_pin_44;
+static volatile UBaseType_t uxFlashTaskNumber = 0;
 
 /* The task that is created three times. */
 static portTASK_FUNCTION_PROTO( vLEDFlashTask, pvParameters );
@@ -76,8 +78,7 @@ void vStartLEDFlashTasks( UBaseType_t uxPriority )
     for( xLEDTask = 0; xLEDTask < ledNUMBER_OF_LEDS; ++xLEDTask )
     {
         /* Spawn the task. */
-        BaseType_t aux = xTaskCreate( vLEDFlashTask, "LEDx", ledSTACK_SIZE, NULL, uxPriority, ( TaskHandle_t * ) NULL );
-        // print_str("Creando tarea de led...\r\n");
+        xTaskCreate( vLEDFlashTask, "LEDx", ledSTACK_SIZE, NULL, uxPriority, ( TaskHandle_t * ) NULL );
     }
 }
 /*-----------------------------------------------------------*/
@@ -91,7 +92,6 @@ static portTASK_FUNCTION( vLEDFlashTask, pvParameters )
     /* The parameters are not used. */
     ( void ) pvParameters;
 
-    // print_str("Inicializando tarea de led...\r\n");
     /* Calculate the LED and flash rate. */
     portENTER_CRITICAL();
     {
@@ -114,12 +114,14 @@ static portTASK_FUNCTION( vLEDFlashTask, pvParameters )
      * vTaskDelayUntil(). */
     xLastFlashTime = xTaskGetTickCount();
 
+    uxLED += LED_RED;
+
     switch (uxLED) {
-        case gpio_pin_44:
-            print_str("Tarea Led Rojo creada\r\n");
+        case LED_RED:
+            print_str("Rojo Task Start\r\n");
             break;
-        case gpio_pin_45:
-            print_str("Tarea Led Verde creada\r\n");
+        case LED_GREEN:
+            print_str("Verde Task Start\r\n");
             break;
         default:
             print_str("vLEDFlashTask ERROR\r\n");
@@ -129,20 +131,15 @@ static portTASK_FUNCTION( vLEDFlashTask, pvParameters )
     // portENTER_CRITICAL();
     for( ; ; )
     {
-        // print_str("vLEDFlashTask\r\n");
-        // print_str("Parpadeando...\r\n");
-
         /* Delay for half the flash period then turn the LED on. */
         vTaskDelayUntil( &xLastFlashTime, xFlashRate );
         vParTestToggleLED( uxLED );
 
-        // print_str("Parpadeando...\r\n");
 
         /* Delay for half the flash period then turn the LED off. */
         vTaskDelayUntil( &xLastFlashTime, xFlashRate );
         vParTestToggleLED( uxLED );
-
-        // print_str("Parpadeando...\r\n");
     }
     // portEXIT_CRITICAL();
 } /*lint !e715 !e818 !e830 Function definition must be standard for task creation. */
+

@@ -1,6 +1,5 @@
 /*
- * FreeRTOS V202212.00
- * Copyright (C) 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * FreeRTOS V202212.00 Copyright (C) 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -34,18 +33,14 @@
 #include "FreeRTOS.h"
 #include "partest.h"
 
-#define LED_RED gpio_pin_44
-#define LED_GREEN gpio_pin_45
-
-#define partstFIRST_IO			gpio_pin_44
-#define partstNUM_LEDS			( 2 )
+#define LED_RED     gpio_pin_44
+#define LED_GREEN   gpio_pin_45
 
 /*-----------------------------------------------------------
  * Simple parallel port IO routines.
  *-----------------------------------------------------------*/
 
-static inline void print_str(char * str)
-{
+static inline void print_str(char * str){
     uart_send(UART1_ID, str, strlen(str));
 }
 
@@ -62,42 +57,41 @@ void vParTestInitialise( void )
 
 inline void vParTestSetLED( unsigned portBASE_TYPE uxLED, signed portBASE_TYPE xValue )
 {
-    // print_str("vParTestSetLED\r\n");
-    if (uxLED <= LED_GREEN ){
+    // if (uxLED >= LED_RED && uxLED <= LED_GREEN ){
+        portENTER_CRITICAL();
         if (xValue)
             gpio_clear_pin(uxLED);
         else
             gpio_set_pin(uxLED);
-    }
-    else {
-        print_str("vParTestSetLED: Led no válido\r\n");
-    }
+        portEXIT_CRITICAL();
+    // }
+    // else {
+    //     print_str("ERROR vParTestSetLED\r\n");
+    // }
 }
 /*-----------------------------------------------------------*/
 
 void vParTestToggleLED( unsigned portBASE_TYPE uxLED )
 {
-    portENTER_CRITICAL();
+    static uint8_t red_led_state   = 0;
+    static uint8_t green_led_state = 0;
+
     switch (uxLED) {
         case LED_RED:
-            print_str("Rojo vParTestToggleLED\r\n");
-            break;
+            // print_str("Rojo Toggle\r\n");
+            // break;
         case LED_GREEN:
-            print_str("Verde vParTestToggleLED\r\n");
+            // print_str("Verde Toggle\r\n");
             break;
         default:
-            print_str("ERROR vParTestToggleLED\r\n");
-            break;
+            print_str("ERROR Toggle\r\n");
+            return;
     }
 
-    static uint32_t red_led_state   = 0;
-    static uint32_t green_led_state = 0;
-
-    uint32_t *led_state = uxLED == LED_RED ? &red_led_state : &green_led_state;
+    uint8_t *led_state = uxLED == LED_RED ? &red_led_state : &green_led_state;
 
     vParTestSetLED(uxLED, *led_state);
 
     *led_state = !*(led_state);
-    portEXIT_CRITICAL();
 }
 
