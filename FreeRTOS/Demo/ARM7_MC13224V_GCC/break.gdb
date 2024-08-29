@@ -46,7 +46,7 @@ commands
 # silent
 # printf "\n\nexcep_nonnested_fiq_handler_asm\n"
 # info registers sp sp_usr sp_irq sp_fiq sp_svc 
-info registers sp sp_fiq
+info registers cpsr sp sp_fiq lr
 continue
 end
 
@@ -55,17 +55,17 @@ commands
 # silent
 # printf "itc_service_fast_interrupt\n"
 # info registers sp sp_usr sp_irq sp_fiq sp_svc 
-info registers sp sp_fiq
+info registers cpsr sp sp_fiq lr
 continue
 end
 
 break vTickISR
 commands
-# silent
-# printf "vTickISR called\n"
-# info registers lr lr_irq lr_svc
-# info registers sp sp_usr sp_irq sp_fiq sp_svc 
-info registers sp sp_fiq
+silent
+printf "vTickISR called\n"
+info registers lr
+# info registers lr sp sp_usr sp_irq sp_fiq sp_svc 
+# info registers cpsr sp sp_fiq lr
 continue
 end
 

@@ -139,7 +139,7 @@ void launchTasks(){
 #endif //TASK_GREEN
 
 #ifdef TASK_LEDS
-    vStartLEDFlashTasks( DEFAULT_PRIORITY );
+    vStartLEDFlashTasks( DEFAULT_PRIORITY - 1U );
 #endif
 
 #ifdef TASK_MATH
@@ -149,7 +149,7 @@ void launchTasks(){
 #ifdef FIBONACCI
     aux = xTaskCreate( vFibonacciTask,
                       "Fibonacci",
-                      configMINIMAL_STACK_SIZE*4,
+                      configMINIMAL_STACK_SIZE*2,
                       NULL,
                       DEFAULT_PRIORITY,
                       NULL);
@@ -217,11 +217,11 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
 /*-----------------------------------------------------------*/
 
 #ifdef FIBONACCI
-#define STR_LEN 10
+#define STR_LEN 8
 static inline void print_int(uint32_t num)
 {
     char str[STR_LEN];
-    uint32_t i=0;
+    uint8_t i=0;
 
     // Convertimos los dígitos a caracteres
     while (num != 0 && i < STR_LEN-3) {
@@ -230,9 +230,9 @@ static inline void print_int(uint32_t num)
         num = num / 10;
     }
 
-    // No deberíamos de habernos pasado,
-    // pero así me quedo más tranquilo
-    if( i+2 >= STR_LEN ) vCrash();
+    // // No deberíamos de habernos pasado,
+    // // pero así me quedo más tranquilo
+    // if( i+2 >= STR_LEN ) vCrash();
 
     // Terminamos la cadena con 3 caracteres:
     // Retorno de carro, nueva linea, caracter nulo.
@@ -241,7 +241,7 @@ static inline void print_int(uint32_t num)
     str[i+2] = '\0';
 
     // Invertimos la cadena
-    for (uint32_t j = 0; j < i / 2; j++) {
+    for (uint8_t j = 0; j < i / 2; j++) {
         char aux = str[j];
         str[j] = str[i - 1 - j];
         str[i - 1 - j] = aux;
@@ -270,8 +270,8 @@ static void vFibonacciTask(void *parameters)
         aux=a+b;
         a=b;
         b=aux;
-        if (b > 100000){
-            a=0; b=1;
+        if (b > 10000){
+            a=0; aux=b=1;
         }
         aux = aux/portTICK_PERIOD_MS;
         portEXIT_CRITICAL();
